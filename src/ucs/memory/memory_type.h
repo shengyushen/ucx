@@ -28,6 +28,8 @@ BEGIN_C_DECLS
  *
  * List of supported memory types.
  */
+// SSY type of memory, most case are host mem
+// some times there are GPU memory 
 typedef enum ucs_memory_type {
     UCS_MEMORY_TYPE_HOST,          /**< Default system memory */
     UCS_MEMORY_TYPE_CUDA,          /**< NVIDIA CUDA memory */

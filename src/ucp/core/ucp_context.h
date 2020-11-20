@@ -190,10 +190,11 @@ typedef struct ucp_context {
     ucp_md_index_t                num_mds;    /* Number of memory domains */
 
     /* List of MDs that detect non host memory type */
-    ucp_md_index_t                mem_type_detect_mds[UCS_MEMORY_TYPE_LAST];
+		// SSY memory type of host and GPU memory
+    ucp_md_index_t                mem_type_detect_mds[UCS_MEMORY_TYPE_LAST]; // SSY uint8_t
     ucp_md_index_t                num_mem_type_detect_mds;  /* Number of mem type MDs */
     uint64_t                      mem_type_mask;            /* Supported mem type mask */
-    ucs_memtype_cache_t           *memtype_cache;           /* mem type allocation cache */
+    ucs_memtype_cache_t           *memtype_cache;           /* mem type allocation cache */ // SSY all detected non host memory
 
     ucp_tl_resource_desc_t        *tl_rscs;   /* Array of communication resources */
     uint64_t                      tl_bitmap;  /* Cached map of tl resources used by workers.
@@ -433,7 +434,7 @@ ucp_tl_iface_bandwidth(ucp_context_h context, const uct_ppn_bandwidth_t *bandwid
     return bandwidth->dedicated +
            (bandwidth->shared / context->config.est_num_ppn);
 }
-
+ // SSY no gpu memory
 static UCS_F_ALWAYS_INLINE int ucp_memory_type_cache_is_empty(ucp_context_h context)
 {
     return (context->memtype_cache &&

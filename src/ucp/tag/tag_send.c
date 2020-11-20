@@ -148,7 +148,7 @@ ucp_tag_send_req_init(ucp_request_t* req, ucp_ep_h ep, const void* buffer,
 static UCS_F_ALWAYS_INLINE int
 ucp_tag_eager_is_inline(ucp_ep_h ep, const ucp_memtype_thresh_t *max_eager_short,
                         ssize_t length)
-{
+{ // SSY seems small msg in tag directly
     return (ucs_likely(length <= max_eager_short->memtype_off) ||
             (length <= max_eager_short->memtype_on &&
              ucp_memory_type_cache_is_empty(ep->worker->context)));
@@ -180,7 +180,7 @@ ucp_tag_send_inline(ucp_ep_h ep, const void *buffer, size_t length, ucp_tag_t ta
 
     return status;
 }
-
+// SSY there may be multiple definition in src/ucs/profile/profile_on.h  and src/ucs/profile/profile_off.h
 UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nb,
                  (ep, buffer, count, datatype, tag, cb),
                  ucp_ep_h ep, const void *buffer, size_t count,
@@ -191,7 +191,7 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nb,
         .cb.send      = (ucp_send_nbx_callback_t)cb,
         .datatype     = datatype
     };
-
+		// SSY defined below
     return ucp_tag_send_nbx(ep, buffer, count, tag, &param);
 }
 
@@ -232,7 +232,7 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_sync_nb,
 
     return ucp_tag_send_sync_nbx(ep, buffer, count, tag, &param);
 }
-
+// SSY ucp_tag_send_nbx
 UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nbx,
                  (ep, buffer, count, tag, param),
                  ucp_ep_h ep, const void *buffer, size_t count,
@@ -262,6 +262,7 @@ UCS_PROFILE_FUNC(ucs_status_ptr_t, ucp_tag_send_nbx,
     } else if (attr_mask == UCP_OP_ATTR_FIELD_DATATYPE) {
         datatype = param->datatype;
         if (ucs_likely(UCP_DT_IS_CONTIG(datatype))) {
+						// SSY ucp_tag_send_inline defined below
             status = UCS_PROFILE_CALL(ucp_tag_send_inline, ep, buffer,
                                       ucp_contig_dt_length(datatype, count), tag);
             ucp_request_send_check_status(status, ret, goto out);

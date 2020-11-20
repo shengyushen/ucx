@@ -114,6 +114,7 @@ struct ucs_pgt_region {
  *
  */
 struct ucs_pgt_entry {
+		// SSY just int64
     ucs_pgt_addr_t                 value;  /**< Pointer + type bits. Can point
                                                 to either a @ref ucs_pgt_dir_t or
                                                 a @ref ucs_pgt_region_t. */
@@ -136,11 +137,12 @@ struct ucs_pgtable {
      * This means: value * (2**shift) .. value * (2**(shift+1)) - 1
      */
     ucs_pgt_entry_t                root;        /**< root entry */
+		// SSY just it64
     ucs_pgt_addr_t                 base;        /**< base address */
     ucs_pgt_addr_t                 mask;        /**< mask for page table address range */
     unsigned                       shift;       /**< page table address span is 2**shift */
     unsigned                       num_regions; /**< total number of regions */
-    ucs_pgt_dir_alloc_callback_t   pgd_alloc_cb;
+    ucs_pgt_dir_alloc_callback_t   pgd_alloc_cb;  // SSY call back to alloc and release page table dir
     ucs_pgt_dir_release_callback_t pgd_release_cb;
 };
 

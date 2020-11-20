@@ -214,8 +214,8 @@ typedef struct ucp_ep_msg_config {
  * Thresholds with and without non-host memory
  */
 typedef struct ucp_memtype_thresh {
-        ssize_t            memtype_on;
-        ssize_t            memtype_off;
+        ssize_t            memtype_on; // SSY host mem
+        ssize_t            memtype_off; // SSY non host mem
 } ucp_memtype_thresh_t;
 
 

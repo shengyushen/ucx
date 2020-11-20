@@ -29,7 +29,8 @@ struct ucs_memtype_cache_region {
 };
 
 
-struct ucs_memtype_cache {
+struct ucs_memtype_cache { // SSY why memtype cache?
+		// SSY protected between multiple threads
     pthread_rwlock_t      lock;       /**< protests the page table */
     ucs_pgtable_t         pgtable;    /**< Page table to hold the regions */
 };

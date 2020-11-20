@@ -298,7 +298,7 @@ typedef struct uct_iface_ops {
     uct_ep_get_zcopy_func_t             ep_get_zcopy;
 
     /* endpoint - active message */
-    uct_ep_am_short_func_t              ep_am_short;
+    uct_ep_am_short_func_t              ep_am_short; // SSY direct inline payload
     uct_ep_am_bcopy_func_t              ep_am_bcopy;
     uct_ep_am_zcopy_func_t              ep_am_zcopy;
 
